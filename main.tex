@@ -1,0 +1,41 @@
+% =====================================================================
+%  main.tex — plik główny pracy dyplomowej
+%
+%  Kolejność \include'ów poniżej to szkielet pracy wg wymogów wydziału
+%  (strony wstępne -> wstęp -> rozdziały -> podsumowanie -> bibliografia
+%  i dodatki). Rozdziały piszesz w plikach sections/ i podpinasz je
+%  w odpowiednim miejscu tej listy. Numerki w nazwach plików (10-, 20-,
+%  40-...) to porządek dla ludzi — LaTeX bierze kolejność z tej listy.
+% =====================================================================
+\documentclass[12pt]{article} % WYMOGI: 12pt
+
+% Preambuła (pakiety, fonty, bibliografia) siedzi w core/packages.tex,
+% dane pracy (temat, autor, promotor...) i makra — w core/macros.tex.
+\input{core/packages}
+\input{core/macros}
+
+\begin{document}
+
+% --- Strony wstępne (układ wydziałowy — nie przemeblowywać) ---
+\include{sections/0-head} % strona tytułowa, temat po angielsku, Summary, spis treści
+
+% --- Treść pracy ---
+\pagestyle{plain}
+
+% AUTOTUTORIAL — rozdział "jak używać tego szablonu".
+% PRZED ODDANIEM PRACY usuń (lub zakomentuj) poniższą linię.
+\include{sections/05-tutorial}
+
+\include{sections/10-intro}        % Wstęp (bez numeru, w spisie treści)
+\include{sections/20-wprowadzenie} % Wprowadzenie + przykładowy rysunek
+\include{sections/25-podstawy}     % Podstawy teoretyczne
+\include{sections/40-analiza-rozw} % Analiza istniejących rozwiązań (listingi)
+\include{sections/45-arch-proj}    % Projekt i architektura
+\include{sections/50-impl}         % Implementacja (wzory, TikZ, algorytmy)
+\include{sections/55-badania}      % Badania eksperymentalne (tabele)
+\include{sections/60-summary}      % Podsumowanie i wnioski
+
+% --- Zamykające ---
+\include{sections/99-tail} % Bibliografia, spisy, dodatki (archiwum płyty itp.)
+
+\end{document}

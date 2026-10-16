@@ -1,0 +1,185 @@
+% =====================================================================
+%  sections/99-tail.tex — bibliografia, spisy i dodatki.
+%  Kolejność bloków poniżej odpowiada wymogom wydziału; redagujesz tu
+%  głównie Dodatek A (opis tego, co trafia na płytę/archiwum).
+% =====================================================================
+
+% Bibliografia: \printbibliography składa wpisy z bibl.bib (biblatex).
+% hbadness/hfuzz wyciszają ostrzeżenia o składu — wpisy z DOI i URL-ami
+% łamią zasady justowania nieodwołalnie i zaśmiecałyby log.
+{
+\hbadness=99999
+\hfuzz=\maxdimen
+\addcontentsline{toc}{section}{Bibliografia}
+\printbibliography[title = {Bibliografia}]
+}
+
+% Spis rysunków generuje się sam z \caption (styl: tocloft w preambule).
+\newpage
+\listoffigures
+
+\newpage
+\phantomsection % Ważne dla poprawnych linków w PDF (pakiet hyperref)
+\addcontentsline{toc}{section}{Spis algorytmów} % Ręczne dodanie wpisu
+\listofalgorithms
+
+\pagebreak
+\phantomsection % Ważne dla poprawnych linków w PDF (pakiet hyperref)
+\addcontentsline{toc}{section}{Dodatek A. Archiwum plików}
+\pagestyle{empty}
+\section*{Dodatek A. Archiwum plików}
+\subsection*{Zawartość archiwum}
+W archiwum umieszczono kod źródłowy tego dokumentu (pracy inżynierskiej),
+kod źródłowy biblioteki,
+przykładów jej wykorzystania oraz pliki wykonywalne na system operacyjny Linux.
+Dołączone zostały również karta dyplomowa oraz oświadczenie dot. GenAI.
+\subsection*{Uruchamianie przykładów}
+Zaleca się uruchamianie programów z poziomu terminala. Wymagany jest procesor
+z obsługą AVX512. Należy nadać plikowi uprawnienia do uruchamiania (jeśli ich nie ma):
+\begin{verbatim}
+chmod +x program
+\end{verbatim}
+Należy następnie go uruchomić:
+\begin{verbatim}
+./program
+\end{verbatim}
+W przypadku chęci samodzielnej kompilacji i uruchomienia przykładów, należy
+przejść do katalogu \texttt{mlrs} i użyć menedżera pakietów
+\texttt{cargo}:
+\begin{verbatim}
+cargo run --release --bin [nazwa przykładu]
+\end{verbatim}
+kompilacja jest gwarantowana w przypadku użycia kompilatora w wersji
+\begin{verbatim}
+rustc 1.92.0-nightly (b6f0945e4 2025-10-08)
+\end{verbatim}
+UWAGA: kompilacja jest gwarantowana tylko na systemie linux debian 13 (trixie).
+Biblioteka jak i przykłady powinny kompilować się i działać na innych systemach operacyjnych
+-- autor nie daje jednak takiej gwarancji.
+
+\newpage
+%\pagestyle{plain}
+%\pagenumbering{Roman}
+%\setcounter{page}{1}
+\section*{Dodatek B: Konwencje notacyjne pseudokodu}
+\addcontentsline{toc}{section}{Dodatek B: Konwencje notacyjne pseudokodu}
+
+W niniejszej pracy stosuje się notację pseudokodu łączącą elementy programowania funkcyjnego oraz imperatywnego, odpowiadając hybrydowemu charakterowi biblioteki napisanej w języku Rust.
+
+\section*{B.1 Notacja ogólna}
+
+\subsection*{Przypisania i mutacje}
+\begin{itemize}
+	\item $x \leftarrow \text{wartość}$ -- przypisanie wartości do zmiennej
+	\item $L.\texttt{field}$ -- dostęp do pola struktury/obiektu
+	\item $\text{list}[i]$ -- indeksowanie tablicy/wektora (numeracja od 0)
+	\item $\text{list}.\text{append}(x)$ -- dodanie elementu na koniec listy (mutacja)
+\end{itemize}
+
+\subsection*{Struktury kontrolne}
+\begin{itemize}
+	\item \texttt{ForEach} $x \in X$ -- iteracja po elementach kolekcji
+	\item \texttt{While} warunek -- pętla z warunkiem
+	\item \texttt{If}/\texttt{eIf}/\texttt{Else} -- instrukcje warunkowe
+	\item \texttt{Return} wartość -- zwrócenie wyniku funkcji
+\end{itemize}
+
+\section*{B.2 Notacja funkcyjna}
+
+\subsection*{Operacje wyższego rzędu}
+\begin{itemize}
+	\item $\text{map}(f, xs)$ -- aplikacja funkcji $f$ do każdego elementu listy $xs$
+	\item $\text{zipWith}(f, xs, ys)$ -- sparowanie elementów dwóch list i aplikacja funkcji binarnej:
+	      $$\text{zipWith}(f, [x_1, x_2, \ldots], [y_1, y_2, \ldots]) = [f(x_1,y_1), f(x_2,y_2), \ldots]$$
+	\item $\text{zip}(xs, ys)$ -- sparowanie elementów: $\text{zip}([x_1, x_2], [y_1, y_2]) = [(x_1,y_1), (x_2,y_2)]$
+	\item $\text{fold}(f, acc, xs)$ -- redukcja listy z akumulatorem początkowym
+\end{itemize}
+
+\subsection*{Równoległość}
+\begin{itemize}
+	\item $\text{par\_zipWith}(f, xs, ys)$ -- równoległa wersja \texttt{zipWith}
+	\item $\text{parallel\_map}(f, xs)$ -- równoległa aplikacja funkcji
+	\item Indeks dolny $_{\parallel}$ lub adnotacja \texttt{(równolegle)} -- oznaczenie równoległego wykonania
+\end{itemize}
+
+\subsection*{Notacja zbiorowa (list comprehension)}
+\begin{itemize}
+	\item $[\, f(x) \mid x \in xs, P(x) \,]$ -- lista elementów $f(x)$ dla $x$ spełniających predykat $P$
+	\item $\{\, a + b \mid (a,b) \in \text{zip}(xs, ys) \,\}$ -- zbiór sum sparowanych elementów
+\end{itemize}
+
+\section*{B.3 Operacje algebraiczne}
+
+\subsection*{Operacje macierzowe}
+\begin{itemize}
+	\item $A \cdot B$ lub $\text{matmul}(A, B)$ -- mnożenie macierzy
+	\item $A^T$ lub $\text{transpose}(A)$ -- transpozycja macierzy
+	\item $A \odot B$ lub $\text{elem\_mul}(A, B)$ -- mnożenie element-wise (Hadamard)
+	\item $A \oplus \mathbf{b}$ lub $\text{broadcast\_add}(A, \mathbf{b})$ -- dodawanie z rozszerzaniem (broadcasting)
+\end{itemize}
+
+\subsection*{Funkcje agregujące}
+\begin{itemize}
+	\item $\sum_{\text{axis}} A$ lub $\text{sum\_axis}(A, \text{axis})$ -- suma wzdłuż wymiaru
+	\item $\text{sum\_rows}(A)$ -- suma wierszy (zwraca wektor kolumnowy)
+\end{itemize}
+
+\subsection*{Funkcje aktywacji}
+\begin{itemize}
+	\item $\sigma(z)$ -- funkcja aktywacji (zazwyczaj sigmoidalna)
+	\item $\sigma'(z)$ lub $\text{sigma\_derivative}(z)$ -- pochodna funkcji aktywacji
+	\item Aplikacja na macierz: $\sigma(Z)$ oznacza element-wise: $[\sigma(Z)]_{ij} = \sigma(z_{ij})$
+\end{itemize}
+
+\section*{B.4 Konwencje specyficzne dla tensorów}
+
+\begin{itemize}
+	\item $T.\text{shape}$ -- wektor wymiarów tensora, np. $[C, W, H, B]$
+	\item $T.\text{strides}$ -- wektor kroków (strides) w pamięci
+	\item $T.\text{data}$ -- surowy wektor danych tensora
+	\item $T.\text{iter}()$ -- iterator po elementach w kolejności logicznej
+	\item $T.\text{iter\_indices}()$ -- iterator po wielowymiarowych indeksach
+	\item $T[idx]$ -- dostęp do elementu przez indeks wielowymiarowy
+\end{itemize}
+
+\section*{B.5 Notacje pomocnicze}
+
+\begin{itemize}
+	\item $|xs|$ -- długość listy/wektora
+	\item $xs \times ys$ -- iloczyn kartezjański (wszystkie pary)
+	\item $\text{reversed}(xs)$ -- odwrócenie kolejności elementów
+	\item \texttt{// komentarz} lub \tcp{komentarz} -- komentarz wyjaśniający
+\end{itemize}
+
+\section*{B.6 Przykłady równoważnych zapisów}
+
+Dla ilustracji, następujące zapisy są równoważne:
+
+\begin{align*}
+	\text{zipWith}(+, xs, ys) & \equiv [\, x + y \mid (x,y) \in \text{zip}(xs, ys) \,]   \\
+	                          & \equiv \text{map}((x,y) \mapsto x+y, \text{zip}(xs, ys)) \\
+	A \cdot B                 & \equiv \text{matmul}(A, B)                               \\
+	\sigma(Z)                 & \equiv \text{map}(\sigma, Z) \text{ (element-wise)}
+\end{align*}
+
+\section*{B.7 Uwagi implementacyjne}
+
+\begin{itemize}
+	\item Operacje oznaczone jako \emph{równoległe} odpowiadają użyciu biblioteki Rayon w implementacji Rust
+	\item Notacja funkcyjna (zipWith, map) odpowiada stylowi \emph{iterator chaining} w Rust
+	\item Operacje macierzowe są delegowane do biblioteki \texttt{faer}
+	\item Wszystkie algorytmy zakładają układ pamięci \emph{column-major} (zerowy wymiar ciągły)
+\end{itemize}
+
+\section*{B.8 Obsługa błędów}
+
+W języku Rust funkcje zwracają typ \texttt{Result<T, E>}, będący monadą reprezentującą albo sukces (\texttt{Ok(value)}), albo błąd (\texttt{Err(error)}). W pseudokodzie:
+
+\begin{itemize}
+	\item $\text{Ok}(x)$ -- operacja zakończona sukcesem, zwraca wartość $x$
+	\item $\text{Err}(e)$ -- operacja nie powiodła się, zwraca błąd $e$
+	\item \textbf{panic:} -- nieodwracalny błąd (odpowiednik \texttt{panic!} w Rust)
+	\item $\bot$ -- brak wartości (odpowiednik \texttt{None} w \texttt{Option<T>})
+\end{itemize}
+
+Algorytmy wykorzystujące walidację wejścia (np. sprawdzanie granic) zwracają \texttt{Result}. Algorytmy, w których błąd jest niemożliwy lub nieistotny, pomijają tę notację dla czytelności.

@@ -1,0 +1,136 @@
+% =====================================================================
+%  sections/05-tutorial.tex — AUTOTUTORIAL
+%
+%  Rozdział, w którym szablon opisuje sam siebie — na przykładach, które
+%  sam demonstruje. Dołączany z main.tex.
+%
+%  PRZED ODDANIEM PRACY: usuń (lub zakomentuj) w main.tex linię
+%      \include{sections/05-tutorial}
+%  i zerknij na listę kontrolną z ostatniej podsekcji tego pliku.
+% =====================================================================
+
+\section*{Autotutorial, czyli szablon o sobie samym}
+\addcontentsline{toc}{section}{Autotutorial, czyli szablon o sobie samym}
+% ^ Właśnie obejrzałeś ręczny patent na rozdział bez numeru, ale z wpisem
+%   w spisie treści. Tak samo zbudowany jest Wstęp, Podsumowanie i Dodatki
+%   (a Numerowany zwykły rozdział dostajesz przez \section{Tytuł}).
+
+Ten rozdział jest tu po to, żebyś TY\footnote{twój LLM} nie czytał dokumentacji pakietów
+o drugiej w nocy. Każdy element, o którym mowa, powinien być gdzieś w szablonie
+użyty na żywo — podglądaj PDF obok źródła, to najszybsza forma nauki.
+
+\subsection*{Kompilacja}
+
+Cały proces zamknięty jest w \verb|compile.sh|:
+
+\begin{verbatim}
+latexmk -bibtex -shell-escape -interaction=nonstopmode -pdfxe main.tex
+\end{verbatim}
+
+latexmk sam ustala, ile przebiegów potrzeba (spis treści i odsyłacze
+\verb|\ref| „łapią" numery dopiero po drugim podejściu).
+Dwie flagi zasługują na wyjaśnienie:
+\begin{itemize}
+	\item \verb|-shell-escape| — pakiet minted (kolorowanie kodu) odpala
+	      zewnętrzny program \texttt{pygmentize}, a LaTeX domyślnie blokuje
+	      uruchamianie obcych programów. Flaga jest zgodą. Jak pygmentize
+	      nie masz: \verb|pip install Pygments|.
+	\item \verb|-pdfxe| — silnik XeLaTeX, bo preambuła używa fontspec
+	      i unicode-math (fonty systemowe, polskie znaki bez sztuczek).
+\end{itemize}
+
+Gdy kompilacja padnie: przeczytaj komunikat — pierwszy błąd się liczy,
+kolejne to zwykle echa. Jeśli log nic sensownego nie mówi, usuń pliki
+pomocnicze (\verb|latexmk -c|) i skompiluj od nowa.
+
+\subsection*{Mapa projektu}
+
+\begin{table}[H]
+	\centering
+	\caption{Mapa projektu. A tak wygląda tabela: środowisko
+		\texttt{table} z podpisem \texttt{\textbackslash caption}
+		i \texttt{\textbackslash label} zaraz po nim.}
+	\label{tab:mapa-projektu}
+	\begin{tabular}{|l|p{8.5cm}|}
+		\hline
+		\textbf{Plik}              & \textbf{Rola}                                  \\
+		\hline
+		\texttt{main.tex}          & szkielet: kolejność rozdziałów                 \\
+		\texttt{core/packages.tex} & preambuła: pakiety, fonty, bibliografia        \\
+		\texttt{core/macros.tex}   & dane pracy (temat, autor, promotor...) i makra \\
+		\texttt{sections/*.tex}    & rozdziały — tu się pisze                       \\
+		\texttt{img/}              & obrazki                                        \\
+		\texttt{bibl.bib}          & baza źródeł do \texttt{\textbackslash cite}    \\
+		\texttt{compile.sh}        & kompilacja jednym poleceniem                   \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection*{Dane pracy}
+
+Temat (PL i EN), autor, promotor, data, typ pracy i angielskie Summary
+to makra w \verb|core/macros.tex|. Rozkład strony tytułowej
+(\verb|sections/0-head.tex|) odpowiada wymaganiom wydziału.
+
+\subsection*{Pisanie rozdziałów}
+
+\begin{itemize}
+	\item \verb|\section{Tytuł}| — numerowany rozdział;
+	\item rozdział bez numeru, ale w spisie treści (Wstęp, Podsumowanie,
+	      Dodatki):
+	      \verb|\section*{Wstęp}| plus \verb|\addcontentsline{toc}{section}{Wstęp}|;
+	\item \verb|\subsection|, \verb|\subsubsection| — podział wewnątrz rozdziału.
+\end{itemize}
+
+Nowy rozdział to zwykle nowy plik w \verb|sections/| podpięty
+\verb|\include| w \verb|main.tex| w odpowiednim miejscu listy.
+
+\subsection*{Elementy składowe — gdzie zobaczyć na żywo}
+
+Szablon zawiera działające przykłady wszystkiego, co typowej pracy
+potrzebne:
+\begin{itemize}
+	\item rysunek kaczki z podpisem i źródłem: rozdział Wprowadzenie
+	      (rysunek \ref{fig:duck} na str. \pageref{fig:duck};
+	      tak, powtarzając 17 raz, to JEST KACZKA.
+	\item tabela: badania eksperymentalne (tabela \ref{tab:xor-dataset}),
+	\item wzór z odsyłaczem „(str. X)": implementacja, równanie
+	      (\ref{eq:indeksliczenie}),
+	\item listing z kolorowaniem składni (Python i Rust): analiza
+	      istniejących rozwiązań oraz implementacja,
+	\item algorytm w pseudokodzie i obrazek rysowany w TikZ-u: implementacja
+	      (algorytm \ref{alg:tensor-iter}),
+	\item cytowania \verb|\cite{...}|: analiza istniejących rozwiązań
+	      i bibliografia na końcu dokumentu.
+\end{itemize}
+
+Żelazne zasady, które oszczędzają nerwów: \verb|\label| zawsze PO
+\verb|\caption|, a każdy
+rysunek i tabela dostają w podpisie źródło — „Źródło: opracowanie własne"
+też jest źródłem.
+
+\subsection*{Bibliografia}
+
+Źródła dopisujesz do \verb|bibl.bib| i cytujesz \verb|\cite{klucz}| (wiele
+naraz: \verb|\cite{a, b, c}|). Numery w bibliografii nadają się same, po
+kolei cytowania — takie jest ustawienie \verb|sorting=none| w preambule.
+Strony internetowe cytujemy z datą dostępu
+(\verb|note = {[Dostęp dnia: 01.04.2025]}|). W \verb|bibl.bib| czeka po
+jednym przykładzie każdego typu wpisu — od artykułu po stronę www.
+
+\subsection*{Lista kontrolna przed oddaniem}
+
+\begin{itemize}
+	\item w \verb|main.tex| usunięta linia dołączająca ten tutorial,
+	\item makra w \verb|core/macros.tex|: temat PL/EN, autor, promotor,
+	      data, typ pracy, \textit{Summary} po angielsku,
+	\item każdy rysunek i tabela mają podpis ze źródłem, ORAZ wspominasz
+	      o nich w tekście (np. „na rysunku \ref{fig:duck} widać kaczkę. Naprawdę, to kaczka."),
+	\item \verb|\label| po \verb|\caption| — odsyłacze mówią prawdę,
+	\item dodatek o archiwum plików opisuje to, co faktycznie tam jest,
+	\item końcowa kompilacja: log bez czerwonych linii, spis treści zgodny
+	      z rzeczywistością,
+	\item ortografia. Promotor czyta. Naprawdę.
+\end{itemize}
+
+Powodzenia.

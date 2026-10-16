@@ -1,0 +1,204 @@
+% =====================================================================
+%  zestaw przykładów:
+%   - wzór \label{eq:indeksliczenie} z odsyłaczem "(str. X)" w tekście,
+%   - listing w Rust (minted),
+%   - duży rysunek rysowany w TikZ-u (komórki tensorów),
+%   - algorytm w pseudokodzie (algorithm2e).
+%  Każdy element ma \label, więc można się do niego odwoływać \ref/\pageref.
+% =====================================================================
+\section{Implementacja podstawowych komponentów} \label{sect:impl}
+Tutaj coś piszemy
+\subsection{Mechanizm Strides i adresowanie pamięci}
+Mapowanie indeksów, wykorzystywane w wielu operacjach, operuje na mechanizmie
+kroków (\textit{strides}). Umożliwia to mapowanie wielowymiarowego indeksu, na przykład $(i, j, k)$
+na fizyczny adres -- przesunięcie (\textit{offset}) względem początku wektora danych. Obliczenie przesunięcia zostało
+ukazany z użyciem wzoru \ref{eq:indeksliczenie} (str. \pageref{eq:indeksliczenie}).
+\begin{equation} \label{eq:indeksliczenie}
+	\text{offset} = \sum_{d=0}^{D-1} i_d \cdot s_d
+\end{equation}
+gdzie $i_d$ to indeks w wymiarze $d$, a $s_d$ to wartość kroku (\textit{stride}) dla tego wymiaru. Operacja ta
+jest implementowana w metodzie \texttt{physical\_offset}.
+
+\begin{minted}[
+    frame=lines,        % Ramka na górze i na dole
+    framesep=2mm,       % Odstęp ramki od kodu
+    baselinestretch=1.2,% Interlinia dla czytelności
+    fontsize=\small,    % Nieco mniejsza czcionka
+    linenos             % Numery linii
+]
+{rust}
+pub fn physical_offset(&self, logical_idx: impl AsRef<[usize]>) -> isize {
+  let logical_idx = logical_idx.as_ref();
+  logical_idx
+    .iter()
+    .zip(self.strides.iter())
+    .fold(0isize, |acc, (&ind, &stride)| acc + ind as isize * stride)
+}
+\end{minted}
+
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}[every node/.style={font=\scriptsize}]
+
+		% DEFINICJE KOLORÓW
+		\definecolor{custorange}{RGB}{255,179,102}
+		\definecolor{custpink}{RGB}{255,153,204}
+		\definecolor{custcyan}{RGB}{153,255,255}
+		\definecolor{custlime}{RGB}{204,255,153}
+
+		% PARAMETRY
+		\pgfmathsetmacro{\cellsize}{1.0}
+		\pgfmathsetmacro{\depthshift}{1.2}
+		\pgfmathsetmacro{\imageshift}{1}
+		\pgfmathsetmacro{\imagespace}{6.5}
+		\pgfmathsetmacro{\matrixstart}{-6.0}
+
+		% 1. zdjęcia
+
+		\begin{scope}[shift={(\imageshift, 0)}]
+			\foreach \h in {0,1} {
+					\foreach \w in {0,1,2} {
+							\pgfmathsetmacro{\xpos}{\w*\cellsize + \depthshift}
+							\pgfmathsetmacro{\ypos}{-\h*\cellsize - \depthshift}
+
+							\fill[custpink, opacity=0.8] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\draw[black] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\node[font=\tiny] at (\xpos + 0.5*\cellsize, \ypos - 0.5*\cellsize)
+							{$i_{1,\w,\h,0}$};
+						}
+				}
+
+			\foreach \h in {0,1} {
+					\foreach \w in {0,1,2} {
+							\pgfmathsetmacro{\xpos}{\w*\cellsize}
+							\pgfmathsetmacro{\ypos}{-\h*\cellsize}
+
+							\fill[custorange, opacity=0.8] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\draw[black] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\node[font=\tiny] at (\xpos + 0.5*\cellsize, \ypos - 0.5*\cellsize)
+							{$i_{0,\w,\h,0}$};
+						}
+				}
+
+			\draw[dashed, gray] (0,0) -- (\depthshift, -\depthshift);
+			\draw[dashed, gray] (3*\cellsize,0) -- (3*\cellsize+\depthshift, -\depthshift);
+			\draw[dashed, gray] (0,-2*\cellsize) -- (\depthshift, -2*\cellsize-\depthshift);
+			\draw[dashed, gray] (3*\cellsize,-2*\cellsize) -- (3*\cellsize+\depthshift, -2*\cellsize-\depthshift);
+
+			\node[above, font=\small\bfseries] at (\cellsize + 0.5, 0.3) {Zdjęcie 0 ($B=0$)};
+		\end{scope}
+
+		\begin{scope}[shift={(\imagespace, 0)}]
+			\foreach \h in {0,1} {
+					\foreach \w in {0,1,2} {
+							\pgfmathsetmacro{\xpos}{\w*\cellsize + \depthshift}
+							\pgfmathsetmacro{\ypos}{-\h*\cellsize - \depthshift}
+
+							\fill[custlime, opacity=0.8] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\draw[black] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\node[font=\tiny] at (\xpos + 0.5*\cellsize, \ypos - 0.5*\cellsize)
+							{$i_{1,\w,\h,1}$};
+						}
+				}
+
+			\foreach \h in {0,1} {
+					\foreach \w in {0,1,2} {
+							\pgfmathsetmacro{\xpos}{\w*\cellsize}
+							\pgfmathsetmacro{\ypos}{-\h*\cellsize}
+
+							\fill[custcyan, opacity=0.8] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\draw[black] (\xpos, \ypos) rectangle ++(\cellsize, -\cellsize);
+							\node[font=\tiny] at (\xpos + 0.5*\cellsize, \ypos - 0.5*\cellsize)
+							{$i_{0,\w,\h,1}$};
+						}
+				}
+
+			\draw[dashed, gray] (0,0) -- (\depthshift, -\depthshift);
+			\draw[dashed, gray] (3*\cellsize,0) -- (3*\cellsize+\depthshift, -\depthshift);
+			\draw[dashed, gray] (0,-2*\cellsize) -- (\depthshift, -2*\cellsize-\depthshift);
+			\draw[dashed, gray] (3*\cellsize,-2*\cellsize) -- (3*\cellsize+\depthshift, -2*\cellsize-\depthshift);
+
+			\node[above, font=\small\bfseries] at (\cellsize + 0.5, 0.3) {Zdjęcie 1 ($B=1$)};
+		\end{scope}
+
+		\draw[->, ultra thick] (6, -3.5) -- (6, \matrixstart + 0.5)
+		node[midway, right] {\texttt{reshape}};
+
+		% 2. MACIERZ
+
+		\begin{scope}[shift={(0, \matrixstart)}]
+			\foreach \x/\cellcolor/\idx in {
+			0/custorange/i_{0,0,0,0}, 1/custorange/i_{0,1,0,0},
+			2/custorange/i_{0,2,0,0}, 3/custorange/i_{0,0,1,0},
+			4/custorange/i_{0,1,1,0}, 5/custorange/i_{0,2,1,0},
+			6/custcyan/i_{0,0,0,1}, 7/custcyan/i_{0,1,0,1},
+			8/custcyan/i_{0,2,0,1}, 9/custcyan/i_{0,0,1,1},
+			10/custcyan/i_{0,1,1,1}, 11/custcyan/i_{0,2,1,1}
+			} {
+			\fill[\cellcolor, opacity=0.8] (\x*\cellsize, 0) rectangle ++(\cellsize, -\cellsize);
+			\draw[black] (\x*\cellsize, 0) rectangle ++(\cellsize, -\cellsize);
+			\node[font=\tiny] at (\x*\cellsize + 0.5*\cellsize, -0.5*\cellsize) {$\idx$};
+			}
+		\end{scope}
+
+		\begin{scope}[shift={(0, \matrixstart - 1*\cellsize)}]
+			\foreach \x/\cellcolor/\idx in {
+			0/custpink/i_{1,0,0,0}, 1/custpink/i_{1,1,0,0},
+			2/custpink/i_{1,2,0,0}, 3/custpink/i_{1,0,1,0},
+			4/custpink/i_{1,1,1,0}, 5/custpink/i_{1,2,1,0},
+			6/custlime/i_{1,0,0,1}, 7/custlime/i_{1,1,0,1},
+			8/custlime/i_{1,2,0,1}, 9/custlime/i_{1,0,1,1},
+			10/custlime/i_{1,1,1,1}, 11/custlime/i_{1,2,1,1}
+			} {
+			\fill[\cellcolor, opacity=0.8] (\x*\cellsize, 0) rectangle ++(\cellsize, -\cellsize);
+			\draw[black] (\x*\cellsize, 0) rectangle ++(\cellsize, -\cellsize);
+			\node[font=\tiny] at (\x*\cellsize + 0.5*\cellsize, -0.5*\cellsize) {$\idx$};
+			}
+		\end{scope}
+
+
+	\end{tikzpicture}
+	\caption{Przedstawienie zmiany kształtu tensora zbioru dwóch zdjęć na
+		reprezentację macierzową bez modyfikacji danych właściwych, a jedynie metadanych.
+		Źródło: opracowanie własne}
+	\label{fig:conv2dimgreshape}
+\end{figure}
+
+\begin{algorithm}[h]
+	% UWAGA na kolejność: najpierw \caption, potem \label — inaczej
+	% odsyłacz \ref{alg:tensor-iter} pokaże złą numerację.
+	\caption{Iterator po tensorze (column-major order)}
+	\label{alg:tensor-iter}
+	\KwIn{Struktura iteratora $I$}
+	\KwOut{Następna wartość lub $\bot$ (brak elementów)}
+
+	\tcp{Struktura TensorIter:}
+	\tcp{$I.\text{view}$ -- referencja do tensora}
+	\tcp{$I.\text{logical\_pos}$ -- bieżąca pozycja [i₀, i₁, ...]}
+	\tcp{$I.\text{finished}$ -- flaga zakończenia}
+
+	\BlankLine
+	\If{$I.\text{finished}$}{
+		\Return $\bot$
+	}
+
+	\tcp{Oblicz fizyczny offset i pobierz wartość}
+	$\text{offset} \gets \sum_{d} I.\text{logical\_pos}[d] \cdot I.\text{view}.\text{strides}[d]$\;
+	$\text{value} \gets I.\text{view}.\text{data}[\text{offset}]$\;
+
+	\tcp{Inkrementuj pozycję (column-major)}
+	$k \gets 0$\;
+	\While{$k < |I.\text{view}.\text{shape}|$}{
+		$I.\text{logical\_pos}[k] \gets I.\text{logical\_pos}[k] + 1$\;
+		\If{$I.\text{logical\_pos}[k] < I.\text{view}.\text{shape}[k]$}{
+			\Return $\text{value}$
+		}
+		$I.\text{logical\_pos}[k] \gets 0$\;
+		$k \gets k + 1$\;
+	}
+
+	$I.\text{finished} \gets \text{true}$\;
+	\Return $\text{value}$
+\end{algorithm}
+

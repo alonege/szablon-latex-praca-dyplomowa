@@ -1,0 +1,97 @@
+% =====================================================================
+%  sections/0-head.tex — strony wstępne: tytułowa, temat po angielsku,
+%  Summary, spis treści.
+%
+%  Układ (rozmieszczenie, odstępy, rozmiary czcionek) jest pod wymagania
+%  wydziału — traktuj jak mebel na stałe. Twoja część to makra z
+%  core/macros.tex: \thesisType, \topicPL, \thesisAuthor, \promotor,
+%  \thesisDate i \summaryEN. Strony wstępne są nienumerowane
+%  (\thispagestyle{empty}); numeracja „1" zaczyna się od Wstępu.
+% =====================================================================
+\begin{center}
+	\fontsize{20pt}{20pt}\selectfont
+	\textbf{POLITECHNIKA BIAŁOSTOCKA}
+	\vspace{1.0cm}
+
+	\fontsize{14pt}{14pt}\selectfont
+	\textbf{WYDZIAŁ INFORMATYKI}
+	\vspace{4.0cm}
+
+	\fontsize{18pt}{18pt}\selectfont
+	\thesisType
+	\fontsize{16pt}{16pt}\selectfont
+
+	\vspace{0.8cm}
+
+	\fontsize{14pt}{14pt}\selectfont
+
+	\vspace{1.6cm}
+
+	TEMAT: \topicPL
+
+	\vspace{1.6cm}
+
+\end{center}
+\fontsize{14pt}{14pt}\selectfont
+
+\vspace{3,4cm}
+
+\begin{flushright}
+	\begin{tabular}{rl}
+		WYKONAWCA: & \thesisAuthor \\
+		           &               \\
+	\end{tabular}
+	\vfill
+\end{flushright}
+
+\begin{flushleft}
+	\begin{tabular}{rl}
+		OPIEKUN PRACY DYPLOMOWEJ: & \promotor \\
+		                          &           \\
+	\end{tabular}
+\end{flushleft}
+
+\vspace{2cm}
+
+\begin{center}
+	\textbf{\thesisDate}
+\end{center}
+
+\thispagestyle{empty}
+
+\pagebreak\ \thispagestyle{empty}
+
+\noindent Subject of diploma thesis:
+
+\noindent \topicEN
+
+\thispagestyle{empty}
+\begin{center}
+	\Large
+	\textbf{Summary}
+
+	\normalsize
+	\justify
+	\summaryEN
+\end{center}
+
+
+\pagebreak
+
+\thispagestyle{empty}
+% Karta dyplomowa od dziekanatu (PDF)? Odkomentuj — pakiet pdfpages jest
+% już załadowany w preambule:
+%    \includepdf[pages=2]{KartaDyplomowa.pdf}
+\thispagestyle{empty}
+
+\pagestyle{empty}
+\pagebreak
+
+\normalsize
+
+\pagebreak
+% Spis treści buduje się sam: wpisy biorą się z \section i z ręcznych
+% \addcontentsline (Wstęp, Podsumowanie, Dodatki).
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\tableofcontents
+\pagebreak

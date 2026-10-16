@@ -1,0 +1,23 @@
+% =====================================================================
+%  Podsumowanie i wnioski — co osiągnięto (wnioski odnoszą się do celów
+%  z Wstępu!), jakie są ograniczenia i co można zrobić dalej.
+%  Rozdział bez numeru, z wpisem w spisie treści.
+% =====================================================================
+\section*{Podsumowanie i wnioski}
+\addcontentsline{toc}{section}{Podsumowanie i wnioski}
+\begin{itemize}
+	\item Zaprojektowano modułową architekturę biblioteki, umożliwiającą łatwe rozszerzanie
+	      przez użytkowników o własne warstwy, optymalizatory, metody inicjalizacji i funkcje straty.
+	\item Zaimplementowano od podstaw własny moduł z $n$-wymiarowymi tensorami, obsługującymi
+	      mechanizm kroków (\textit{strides}), oraz stosujących podejście typu \textit{zero-copy}
+	      (\textit{Copy-on-Write}) -- co pozwalało na uzyskanie wysokiej wydajności oraz efektywnie
+	      zarządzanie zasobami. Do operacji mnożenia macierzy skorzystano z zewnętrznej biblioteki.
+	\item Stworzono implementacje kluczowych warstw sieci neuronowych -- takich jak warstwy gęste
+	      (liniowe), konwolucyjne (Conv2D) z wykorzystaniem własnoręcznie napisanego algorytmu im2col,
+	      a także funkcji aktywacji i strat.
+	\item W ramach architektury biblioteki opracowano podejście ręcznego różniczkowania -- wymuszającego
+	      jawną implementację propagacji wstecznej dla każdego modułu, co pozwala na pełną kontrolę nad przepływem
+	      gradientów. Jednocześnie zaimplementowano propagację wsteczną dla warstw wbudowanych.
+	\item Stworzono dwa przykładowe programy korzystające z biblioteki -- co pozwoliło na sprawdzenie
+	      poprawności jej działania oraz zaprezentowania jej przykładowego użycia.
+\end{itemize}

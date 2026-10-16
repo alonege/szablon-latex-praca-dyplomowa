@@ -1,0 +1,31 @@
+% =====================================================================
+%  Badania eksperymentalne — co sprawdzono, jak i z jakim skutkiem:
+%  metodyka, zbiory danych, wyniki (tabele/wykresy) i ich interpretacja.
+%  Wynik bez interpretacji to nie badanie, tylko screenshot.
+%
+%  Demonstracja tabeli: tabular + caption + label (label PO caption).
+% =====================================================================
+\section{Badania eksperymentalne i walidacja biblioteki}\label{sec:badania}
+Tutaj coś piszemy...
+\subsection{Zbiór XOR}
+Zbiór danych XOR składa się z czterech tensorów o wymiarach
+$2 \times 1$, zawierających wszystkie możliwe kombinacje wartości
+dla funkcji logicznej XOR - co ukazano w tabeli
+\ref{tab:xor-dataset}
+(str. \pageref{tab:xor-dataset}).
+\begin{table}[H]
+	\centering
+	\caption{Zbiór danych XOR. Źródło: opracowanie własne.}
+	\begin{tabular}{|c|c|}
+		\hline
+		Wejście      & Wyjście \\
+		\hline
+		$[0, 0]^{T}$ & $[0]$   \\
+		$[0, 1]^{T}$ & $[1]$   \\
+		$[1, 0]^{T}$ & $[1]$   \\
+		$[1, 1]^{T}$ & $[0]$   \\
+		\hline
+	\end{tabular}
+
+	\label{tab:xor-dataset}
+\end{table}

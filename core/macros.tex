@@ -1,0 +1,46 @@
+% =====================================================================
+%  core/macros.tex — dane pracy i drobne makra wspólne
+%  (Plik dołączany z main.tex przez \input.)
+% =====================================================================
+
+% ---------------------------------------------------------------------
+%  DANE PRACY — uzupełnij poniższe makra. Wpisujesz raz, strona tytułowa
+%  (sections/0-head.tex) i Summary aktualizują się same.
+% ---------------------------------------------------------------------
+
+% Typ pracy: inżynierska albo magisterska.
+\newcommand{\thesisType}{PRACA DYPLOMOWA INŻYNIERSKA}
+
+% Streszczenie po angielsku (trafia na osobną stronę po stronie tytułowej).
+\newcommand{\summaryEN}{
+  TUTAJ WPISZ SUMMARY PRACY PO ANG
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc in vehicula est. Proin a justo sagittis, interdum nisl nec, viverra dolor. Etiam at porttitor justo. Ut ut enim nibh. Donec tellus turpis, convallis pulvinar urna sit amet, placerat dignissim felis. Cras tempor eget nunc eu sagittis. Vivamus eget nunc dignissim, lobortis enim quis, sagittis urna. Aenean eget erat dapibus, fermentum arcu sed, lacinia augue. Maecenas velit enim, mollis sed pharetra ac, porta id libero.
+
+  }
+
+\newcommand{\topicPL}{Temat pracy po polsku}
+\newcommand{\topicEN}{Temat pracy po angielsku}
+
+\newcommand{\thesisAuthor}{TWOJE IMIĘ I NAZWISKO}
+\newcommand{\thesisDate}{BIAŁYSTOK 20XX ROK}
+
+\newcommand{\promotor}{prof. dr hab. inż. PROMOTOR}
+
+% ---------------------------------------------------------------------
+%  Rozdziały bez numeru (Wstęp, Podsumowanie, Dodatki) robi się ręcznie
+%  dwiema linijkami — i dokładnie tak trzeba, bo \section* sam z siebie
+%  nie trafia do spisu treści:
+%
+%      \section*{Wstęp}
+%      \addcontentsline{toc}{section}{Wstęp}
+%
+%  hyperref (załadowany w packages.tex) zakotwicza odnośnik w miejscu
+%  wpisu, więc klik w spisie treści prowadzi dokładnie w to miejsce.
+%  Zwykłe, numerowane rozdziały: po prostu \section{Tytuł}.
+% ---------------------------------------------------------------------
+
+% Nazwy używane pośrednio przez pakiet listings (a więc i przez minted):
+% prefiks podpisu pod listingiem ("Listing 3: ...") oraz tytuł spisu listingów.
+\renewcommand{\listingscaption}{Listing}
+\renewcommand{\listoflistingscaption}{Spis listingów}

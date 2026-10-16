@@ -1,0 +1,119 @@
+% =====================================================================
+%  core/packages.tex — preambuła: pakiety, fonty, ustawienia globalne
+%
+%  Komentarz "WYMOGI" oznacza wartości narzucone przez wymagania
+%  edytorskie wydziału — nie zmieniaj ich bez konsultacji z promotorem.
+%  Kolejność ładowania też nie jest dowolna (np. unicode-math PO
+%  fontspec, hyperref prawie na końcu) — przy przestawianiu czytaj
+%  komentarze.
+% =====================================================================
+
+% --- 1. Podstawowa konfiguracja i język ---
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3.5cm, right=2cm]{geometry}
+% WYMOGI: marginesy. Lewy 3,5 cm jest większy, bo tam strona schodzi pod oprawę.
+\usepackage{indentfirst}
+% Wcięcie także w pierwszym akapicie po nagłówku — polska konwencja typograficzna.
+\usepackage[polish]{babel}
+% Polskie napisy ("Rysunek", "Tabela", "Spis treści"...) i dzielenie wyrazów.
+% W XeLaTeX używamy babel, a NIE pakietu 'polski' — tamten jest dla pdfLaTeX.
+
+% --- 2. Fonty i matematyka (XeLaTeX) ---
+% fontspec/unicode-math działają tylko pod XeLaTeX/LuaLaTeX — stąd -pdfxe w compile.sh.
+\usepackage{mathtools} % nadzbiór amsmath (środowiska matematyczne)
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fontspec}
+\usepackage{unicode-math} % to musi być PO fontspec i amsmath
+
+% Domyślny krój: Latin Modern. Teoretycznie powinien to być Times New Roman, jednak na
+% linuxie jego instalcja jest problematyczna, a LM jest bardzo podobny i w pełni darmowy;
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+
+% Mono (kod źródłowy): Latin Modern Mono nie ma znaków indeksów dolnych (₀₁),
+% więc bierzemy DejaVu Sans Mono — pełne pokrycie znaków, standard w Linuksie.
+% Nie masz DejaVu? Tu wchodzi np. "FreeMono" albo "Courier New".
+\setmonofont{DejaVu Sans Mono}[
+	Scale=MatchLowercase,
+	%FakeBold=1.0, % emulacja pogrubienia dla kodu
+]
+
+\setmathfont{Latin Modern Math} % wymagane przy unicode-math
+
+% --- 3. Grafika i kolory ---
+\usepackage{graphicx}          % \includegraphics — obrazki PNG/JPG/PDF
+\usepackage{wrapfig}           % tekst opływający rysunek
+\usepackage[section]{placeins} % rysunki nie uciekają poza swoją sekcję
+\usepackage{float}             % opcja [H] = "dokładnie tutaj, nie kombinuj"
+\usepackage{tikz}              % rysunki wektorowe w kodzie (przykład: 50-impl.tex)
+\usepackage{pgfplots}          % wykresy w TikZ-u
+\pgfplotsset{compat=1.18}
+
+% \usepackage[inkscapeformat=png]{svg}
+% ^ Odkomentuj, jeśli chcesz wstawiać .svg. Wymaga zainstalowanego Inkscape
+%   (konwersja dzieje się przy kompilacji). Bez .svg w pracy — nie włączaj.
+%   użyj wtedy \includesvg{pathdopliku}
+
+% --- 4. Tabele i listy ---
+\usepackage{paralist}  % kompaktowe listy (compactitem i spółka)
+\usepackage{enumerate} % własne etykiety w \begin{enumerate}[...]
+\usepackage{multirow}  % komórka na kilka wierszy
+\usepackage{multicol}  % kilka łamów w obrębie strony
+\usepackage{tabulary}  % tabele z zawijaniem tekstu do szerokości
+\usepackage{ragged2e}  % \justify i spółka (używane na stronie tytułowej)
+\usepackage{makecell}  % wielolinijkowe komórki \makecell{...}
+\usepackage{tocloft}   % styl spisu treści (szerokość kolumny numerów itd.)
+
+% --- 5. Kod i algorytmy ---
+\usepackage{minted}
+% minted koloruje składnię przez ZEWNĘTRZNY program pygmentize, dlatego:
+%  a) musi być zainstalowany (pip install Pygments; test: pygmentize -V),
+%  b) kompilacja musi iść z -shell-escape — compile.sh już to robi.
+\usepackage[ruled, vlined]{algorithm2e} % pseudokod (przykład: 50-impl.tex)
+
+% --- 6. Bibliografia (biblatex) ---
+\usepackage[nottoc]{tocbibind}
+% Spisy i bibliografia wchodzą do spisu treści
+\usepackage[
+	sorting=none,       % numery [1], [2]... w kolejności CYTOWANIA, nie alfabetycznie
+	style=numeric-comp, % styl numerowany, [3–6] zamiast [3,4,5,6]
+	maxbibnames=3,      % przy 4+ autorach w bibliografii pojawia się "i in."
+	minbibnames=3
+]{biblatex}
+\addbibresource{bibl.bib} % baza źródeł; klucze cytujesz przez \cite{klucz}
+\DefineBibliographyStrings{polish}{
+	andothers = {i~in\adddot} % polskie "i in." zamiast "et al."
+}
+
+% --- 7. Różne ---
+\usepackage{siunitx} % jednostki i liczby: \qty{9.81}{m/s^2} -> "9,81 m/s²"
+\linespread{1.5}     % WYMOGI: interlinia 1,5
+\parindent=1cm       % WYMOGI: wcięcie akapitowe
+\setlength{\cftfignumwidth}{4em} % tocloft: miejsce na numery w spisie treści
+
+% Numeracja wewnątrz rozdziałów: wzór (3.1), rysunek 3.1 itd.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\counterwithin{figure}{section}
+
+% Polskie nazwy algorytmów ("Algorytm 1"; spis: "Spis algorytmów")
+\SetAlgorithmName{Algorytm}{algorytm}{Spis algorytmów}
+
+% Biblioteki TikZ. Dokładanie "na zapas" spowalnia kompilację —
+% dopisuj, gdy faktycznie czegoś brakuje.
+\usetikzlibrary{
+	automata, shapes.multipart, positioning, arrows.meta,
+	shadows, fit, shapes.geometric, calc, patterns
+}
+
+% --- 8. Pakiety ingerujące w PDF (ładować na końcu!) ---
+\usepackage{pdfpages} % \includepdf — np. wklejenie karty dyplomowej PDF (0-head.tex)
+
+\usepackage[colorlinks, plainpages=false, pdfpagelabels, naturalnames=true]{hyperref}
+\hypersetup{
+	linkcolor={black!50!black}, % odnośniki wewnętrzne
+	citecolor={blue!50!black}, % cytowania: przygaszony niebieski
+	urlcolor={blue!80!black}   % adresy www: niebieski
+}
+
+% --- Koniec preambuły ---

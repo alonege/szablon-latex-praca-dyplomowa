@@ -1,0 +1,213 @@
+% =====================================================================
+%  bibl.bib — baza źródeł (biblatex; klucze cytujesz w tekście \cite{...}).
+%  W tekście: \cite{Paszke2019pytorch} albo kilka naraz:
+%  \cite{Paszke2019pytorch, Paszke2017}. Numery nadają się same, po kolei
+%  cytowania (sorting=none w core/packages.tex).
+%
+%  W pliku reprezentowano najczęstsze typy źródeł:
+%   @article       — artykuł z czasopisma  (10.1145/3371109)
+%   @inproceedings — referat konferencyjny (Paszke2019pytorch, 10.1145/3674805...)
+%   @book          — książka               (russell2016artificial)
+%   @inbook        — rozdział w książce zbiorowej (Lecun1998b)
+%   @techreport    — raport techniczny     (Lawson2024)
+%   @manual        — dokumentacja oprogramowania (rustreference)
+%   @misc + eprint/archivePrefix — preprinty z arXiv (pascanu2013...)
+%   @misc + howpublished     — strony www (fluxmlWelcomeFlux); dla stron
+%                     obowiązkowo note = {[Dostęp dnia: DD.MM.RRRR]}.
+%
+%  Najszybsza droga: Google Scholar -> Cytuj -> BibTeX, potem porządek
+%  w polach (rok, "Dostęp dnia" dla URL-i, wielkość liter w tytułach).
+% =====================================================================
+
+@article{10.1145/3371109,
+  author = {Jung, Ralf and Dang, Hoang-Hai and Kang, Jeehoon and Dreyer, Derek},
+  title = {Stacked borrows: an aliasing model for Rust},
+  year = {2019},
+  issue_date = {January 2020},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  volume = {4},
+  number = {POPL},
+  url = {https://doi.org/10.1145/3371109},
+  doi = {10.1145/3371109},
+  abstract = {Type systems are useful not just for the safety guarantees they
+              provide, but also for helping compilers generate more efficient
+              code by simplifying important program analyses. In Rust, the type
+              system imposes a strict discipline on pointer aliasing, and it is
+              an express goal of the Rust compiler developers to make use of that
+              alias information for the purpose of program optimizations that
+              reorder memory accesses. The problem is that Rust also supports
+              unsafe code, and programmers can write unsafe code that bypasses
+              the usual compiler checks to violate the aliasing discipline. To
+              strike a balance between optimizations and unsafe code, the
+              language needs to provide a set of rules such that unsafe code
+              authors can be sure, if they are following these rules, that the
+              compiler will preserve the semantics of their code despite all the
+              optimizations it is doing. In this work, we propose Stacked Borrows
+              , an operational semantics for memory accesses in Rust. Stacked
+              Borrows defines an aliasing discipline and declares programs
+              violating it to have undefined behavior, meaning the compiler does
+              not have to consider such programs when performing optimizations.
+              We give formal proofs (mechanized in Coq) showing that this rules
+              out enough programs to enable optimizations that reorder memory
+              accesses around unknown code and function calls, based solely on
+              intraprocedural reasoning. We also implemented this operational
+              model in an interpreter for Rust and ran large parts of the Rust
+              standard library test suite in the interpreter to validate that the
+              model permits enough real-world unsafe Rust code.},
+  journal = {Proc. ACM Program. Lang.},
+  month = dec,
+  articleno = {41},
+  numpages = {32},
+  keywords = {Rust, alias analysis, operational semantics, program
+              transformation},
+}
+
+@misc{pascanu2013difficultytrainingrecurrentneural,
+  title = {On the difficulty of training Recurrent Neural Networks},
+  author = {Razvan Pascanu and Tomas Mikolov and Yoshua Bengio},
+  year = {2013},
+  eprint = {1211.5063},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.LG},
+  url = {https://arxiv.org/abs/1211.5063},
+}
+
+@inproceedings{10.1145/3674805.3690756,
+  author = {Panter, Shane and Eisty, Nasir},
+  title = {Rusty Linux: Advances in Rust for Linux Kernel Development},
+  year = {2024},
+  isbn = {9798400710476},
+  publisher = {Association for Computing Machinery},
+  address = {New York, NY, USA},
+  url = {https://doi.org/10.1145/3674805.3690756},
+  doi = {10.1145/3674805.3690756},
+  abstract = {Context: The integration of Rust into kernel development is a
+              transformative endeavor aimed at enhancing system security and
+              reliability by leveraging Rust’s strong memory safety guarantees.
+              Objective: We aim to find the current advances in using Rust in
+              Kernel development to reduce the number of memory safety
+              vulnerabilities in one of the most critical pieces of software that
+              underpins all modern applications. Method: By analyzing a broad
+              spectrum of studies, we identify the advantages Rust offers,
+              highlight the challenges faced, and emphasise the need for
+              community consensus on Rust’s adoption. Results: Our findings
+              suggest that while the initial implementations of Rust in the
+              kernel show promising results in terms of safety and stability,
+              significant challenges remain. These challenges include achieving
+              seamless interoperability with existing kernel components,
+              maintaining performance, and ensuring adequate support and tooling
+              for developers. Conclusions: This study underscores the need for
+              continued research and practical implementation efforts to fully
+              realize the benefits of Rust. By addressing these challenges, the
+              integration of Rust could mark a significant step forward in the
+              evolution of operating system development towards safer and more
+              reliable systems.},
+  booktitle = {Proceedings of the 18th ACM/IEEE International Symposium on
+               Empirical Software Engineering and Measurement},
+  pages = {496–502},
+  numpages = {7},
+  keywords = {Kernel, Linux, Memory safety, Operating System, Rust},
+  location = {Barcelona, Spain},
+  series = {ESEM '24},
+}
+
+@book{russell2016artificial,
+  title = {Artificial Intelligence: A Modern Approach},
+  author = {Russell, Stuart J and Norvig, Peter},
+  year = {2016},
+  edition = {3rd},
+  publisher = {Pearson},
+  isbn = {9780136042594},
+}
+
+@inbook{Lecun1998b,
+  author = "LeCun, Yann and Bottou, Leon and Orr, Genevieve B. and M{\"u}ller,
+            Klaus -Robert",
+  editor = "Orr, Genevieve B. and M{\"u}ller, Klaus-Robert",
+  title = "Efficient BackProp",
+  bookTitle = "Neural Networks: Tricks of the Trade",
+  year = "1998",
+  publisher = "Springer Berlin Heidelberg",
+  address = "Berlin, Heidelberg",
+  pages = "9--50",
+  abstract = "The convergence of back-propagation learning is analyzed so as to
+              explain common phenomenon observedb y practitioners. Many
+              undesirable behaviors of backprop can be avoided with tricks that
+              are rarely exposedin serious technical publications. This paper
+              gives some of those tricks, ando.ers explanations of why they work.
+              Many authors have suggested that second-order optimization methods
+              are advantageous for neural net training. It is shown that most
+              ``classical'' second-order methods are impractical for large neural
+              networks. A few methods are proposed that do not have these
+              limitations.",
+  isbn = "978-3-540-49430-0",
+  doi = "10.1007/3-540-49430-8_2",
+  url = "https://doi.org/10.1007/3-540-49430-8_2",
+}
+
+@manual{rustreference,
+  title = {The Rust Reference},
+  author = {{The Rust Project Developers}},
+  year = {2024},
+  url = {https://doc.rust-lang.org/reference/},
+  note = {[Dostęp dnia: 25.11.2025]},
+}
+
+@inproceedings{Paszke2019pytorch,
+  author = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and
+            Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin,
+            Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban
+            and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison,
+            Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner,
+            Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  booktitle = {Advances in Neural Information Processing Systems},
+  editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d
+            \textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+  pages = {},
+  publisher = {Curran Associates, Inc.},
+  title = {PyTorch: An Imperative Style, High-Performance Deep Learning Library},
+  url = {
+         https://proceedings.neurips.cc/paper_files/paper/2019/file/bdbca288fee7f92f2bfa9f7012727740-Paper.pdf
+         },
+  volume = {32},
+  year = {2019},
+}
+
+@techreport{Lawson2024,
+  title = "Shaping the future of generative {AI}: The impact of open source
+           innovation",
+  author = "Lawson, Adrienn and Hendrick, Stephen and Rausch, Nancy and Sica,
+            Jeffrey and Gerosa, Marco",
+  abstract = "LF AI \& Data and CNCF partnered with LF Research to answer the
+              question: what is the role of open source in the evolution and
+              implementation of generative AI (GenAI) technologies? Based on a
+              survey of 316 professionals across diverse industries, this report
+              shows how open source tools are accelerating GenAI adoption while
+              setting a foundation for the future of AI. Key findings show that
+              84\% of organizations have a moderate to high adoption of GenAI,
+              and 41\% of that infrastructure is open source. Leading use cases
+              include process automation, content generation, and code
+              generation. What's more, 82\% of respondents agree that open source
+              AI is critical for a positive AI future.",
+  publisher = "The Linux Foundation",
+  month = nov,
+  year = 2024,
+}
+
+@inproceedings{Paszke2017,
+  title = {Automatic differentiation in PyTorch},
+  author = {Adam Paszke and Sam Gross and Soumith Chintala and Gregory Chanan
+            and Edward Yang and Zachary DeVito and Zeming Lin and Alban Desmaison
+            and Luca Antiga and Adam Lerer},
+  year = {2017},
+  url = {https://api.semanticscholar.org/CorpusID:40027675},
+}
+
+@misc{fluxmlWelcomeFlux,
+  author = {{FluxML developers}},
+  title = {Dokumentacja {F}lux --- fluxml.ai},
+  howpublished = {\url{https://fluxml.ai/Flux.jl/stable/}},
+  %year = {2025},
+  note = {[Dostęp dnia 30.12.2025]},
+}

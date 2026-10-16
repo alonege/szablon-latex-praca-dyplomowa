@@ -1,0 +1,34 @@
+% =====================================================================
+%  Analiza istniejących rozwiązań i technologii — przegląd tego, co już
+%  istnieje (biblioteki, narzędzia, podobne prace) z uzasadnieniem
+%  wyboru technologii.
+%
+%  Demonstration deck: listing z kolorowaniem składni (minted, tu Python).
+%  minted wymaga kompilacji z -shell-escape i zainstalowanego Pygments —
+%  compile.sh załatwia jedno, a pip install Pygments drugie.
+% =====================================================================
+\section{Analiza istniejących rozwiązań i technologii}
+Dzięki swojej prostocie, biblioteka stanowi standard w badaniach dotyczących
+głębokiego uczenia oraz w zastosowaniach komercyjnych \cite{Paszke2019pytorch, Paszke2017, Lawson2024}.
+
+\begin{minted}[
+    frame=lines,        % Ramka na górze i na dole
+    framesep=2mm,       % Odstęp ramki od kodu
+    baselinestretch=1.2,% Interlinia dla czytelności
+    fontsize=\small,    % Nieco mniejsza czcionka
+    linenos             % Numery linii
+]
+{python}
+import torch
+
+# Operacje wykonywane natychmiast, graf budowany dynamicznie
+x = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)
+y = x.pow(2)        # y.grad_fn = <PowBackward0>
+z = y.sum()         # z.grad_fn = <SumBackward0>
+
+print(z.item())     # Wartość dostępna od razu: 14.0
+
+# Propagacja wsteczna przez zbudowany graf
+z.backward()
+print(x.grad)       # tensor([2., 4., 6.])
+\end{minted}
